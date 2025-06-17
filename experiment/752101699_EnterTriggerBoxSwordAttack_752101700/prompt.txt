@@ -1,14 +1,112 @@
 Imagine you are helping software test engineers to create comprehensive test plans without delving into the specifics of the code.Test engineers want to test the App. One game object we want to test in the scene of Game.unity is EnterTriggerBoxSwordAttack.
-The current scene isGame.unity. One of the gameobjects calledEnterTriggerBoxSwordAttack.
+The current scene is Game.unity. One of the gameobjects called EnterTriggerBoxSwordAttack.
 Despite the events that can be triggered automatically, please choose the event we want to trigger in some conditions. We will provide the source code of the script attacked to this gameobjects below. Please give me a test plans to trigger all the events and also ensure wider code coverage. Do not generate other information other than I specified here. 
 [Format of Test Plans] Give me a list of plans, each plan contains actions chosen from the action list: ['Grab', 'Move', 'Drop', 'Trigger', 'Transform']. I need a quantitative plan with a list of step by step actions:
 For example, if you choose 'Move' action, please give me <'Move', '(x,y,z)('Position of the destination')'>;
 If you choose 'Grab', please give me <'Grab', 'name of the gameobject you want to grab'>;
 If you choose 'Trigger', please give me <'Trigger', 'name of the gameobject you want to trigger', 'how to trigger the gameobjects',  'how many times you need to trigger to ensure code coverage'>;
 If you choose 'Transform', please give me <'Transform', 'name of the gameobject you want to transform', 'detailed position you want to transform to ensure code coverage'>;
-After you provide me sequence of action list, please give me list of expecting feedbacks to check after we perform the test. Here, please provide me with feedbacks that can easily be detected by our test engineers of multimodal feedback, such as vision and sound. For example, Action: <'Trigger', 'button 1'>; Feedbacks:<'Gameobject n', 'Status: Active'>.The scene file can specify the detailed settings of gameobjects and its attached Monobehavior. We've already compiled the information in JSON format. I'll provide you with the related information of game object and its components. The monobehaviour component controls the logic of gameobject. And the transform component is used to store and manipulate the position, rotation and scale of the object. Please specify that the Monobehavior component in the scene file I provided is the settings of the script file attached to the game objects we want to test. Please read the scene settings below and finalize the quantative conditions of your detailed plan based on the scene file.
+After you provide me sequence of action list, please give me list of expecting feedbacks to check after we perform the test. Here, please provide me with feedbacks that can easily be detected by our test engineers of multimodal feedback, such as vision and sound. For example, Action: <'Trigger', 'button 1'>; Feedbacks:<'Gameobject n', 'Status: Active'>.
+[Source code of script files attached]
+```
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.SceneManagement;
+
+[RequireComponent(typeof(LineRenderer))]
+public class RaycastGun : MonoBehaviour
+{
+    public Camera playerCamera;
+    public Transform laserOrigin;
+    public GameObject Object;
+    private bool isPlayerOnObject = false;
+    public GameObject player;
+    public float gunRange = 50f;
+    public float fireRate = 0.2f;
+    public float laserDuration = 0.05f;
+ 
+    LineRenderer laserLine;
+    float fireTimer;
+
+    AudioManager audioManager;
+    public List<GameObject> destroyObject; // List of objects to destroy
+
+    void Awake()
+    {
+        laserLine = GetComponent<LineRenderer>();
+        audioManager = GameObject.FindGameObjectWithTag("Audio").GetComponent<AudioManager>();
+    }
+
+    void Update()
+    {
+        if (isPlayerOnObject)
+        {
+            fireTimer += Time.deltaTime;
+            if (Input.GetKeyDown(KeyCode.K) && fireTimer > fireRate)
+            {
+                fireTimer = 0;
+                laserLine.SetPosition(0, laserOrigin.position);
+                Vector3 rayOrigin = playerCamera.ViewportToWorldPoint(new Vector3(0.5f, 0.5f, 0));
+                RaycastHit hit;
+                if (Physics.Raycast(rayOrigin, playerCamera.transform.forward, out hit, gunRange))
+                {
+                    if (hit.collider.gameObject == Object)
+                    {
+                        audioManager.PlaySFX(audioManager.swordSound);
+                        laserLine.SetPosition(1, hit.point);
+                        audioManager.PlaySFX(audioManager.disappearSound);
+                        Destroy(hit.transform.gameObject);
+                        Object = null; // Destroyed object
+                    }
+                }
+                else
+                {
+                    laserLine.SetPosition(1, rayOrigin + (playerCamera.transform.forward * gunRange));
+                }
+                StartCoroutine(ShootLaser());
+
+                // Check if object is destroyed
+                if (Object == null)
+                {
+                    GameOver();
+                }
+            }
+        }
+    }
+ 
+    IEnumerator ShootLaser()
+    {
+        laserLine.enabled = true;
+        yield return new WaitForSeconds(laserDuration);
+        laserLine.enabled = false;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject == player)
+        {
+            isPlayerOnObject = true;
+        }
+    }
+
+    void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject == player)
+        {
+            isPlayerOnObject = false;
+        }
+    }
+
+    public void GameOver()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+}
+```
+The scene file can specify the detailed settings of gameobjects and its attached Monobehavior. We've already compiled the information in JSON format. I'll provide you with the related information of game object and its components. The monobehaviour component controls the logic of gameobject. And the transform component is used to store and manipulate the position, rotation and scale of the object. Please specify that the Monobehavior component in the scene file I provided is the settings of the script file attached to the game objects we want to test. Please read the scene settings below and finalize the quantative conditions of your detailed plan based on the scene file.
 [Compiled Information of scene meta file]
-[Game Object]
+[GameObject]
 [{'m_ObjectHideFlags': '0'}, {'m_CorrespondingSourceObject': [{'fileID': '0'}]}, {'m_PrefabInstance': [{'fileID': '0'}]}, {'m_PrefabAsset': [{'fileID': '0'}]}, {'serializedVersion': '6'}, {'m_Component': [{'component': [{'fileID': '752101706'}]}, {'component': [{'fileID': '752101705'}]}, {'component': [{'fileID': '752101704'}]}, {'component': [{'fileID': '752101703'}]}, {'component': [{'fileID': '752101702'}]}, {'component': [{'fileID': '752101701'}]}, {'component': [{'fileID': '752101700'}]}]}, {'m_Layer': '0'}, {'m_Name': 'EnterTriggerBoxSwordAttack'}, {'m_TagString': 'Untagged'}, {'m_Icon': [{'fileID': '0'}]}, {'m_NavMeshLayer': '0'}, {'m_StaticEditorFlags': '0'}, {'m_IsActive': '1'}]
 [MonoBehaviour]
 {'guid': '74e8e3766e29a469b99566e7833141b1', 'file_path': 'D:\\XRFix\\dataset_collection\\overall\\VR-AR-Game\\Game\\Assets\\CodeScripts\\RaycastGun.cs.meta', 'name': 'RaycastGun.cs', 'type': 'meta', 'file_size': 254, 'num_components': 0, 'COMPONENTS': [{'id': 'MonoImporter', 'MonoImporter': [{'externalObjects': ''}, {'serializedVersion': '2'}, {'defaultReferences': []}, {'executionOrder': '0'}, {'icon': [{'instanceID': '0'}]}, {'userData': ''}, {'assetBundleName': ''}, {'assetBundleVariant': ''}]}], 'ProjectName': 'UnityProject', 'ProjectPath': ''}

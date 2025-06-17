@@ -40,25 +40,25 @@ def create_exp_settings(G, mono_lis, scene_settings):
             for target_id, edge_data in G[mono_script].items():
                 if edge_data["type"] == "Source_Code_File":
                     source_file_properties = G.nodes[target_id].get('properties', {})
-                    for source_property in source_file_properties:
-                        for prop in source_property:
-                            if 'file_path' in prop:
-                                source_file_path = prop["file_path"]
-                                with open(source_file_path, 'r') as f1:
-                                    script_code = script_code + "\n" + f1 + "\n" + csharp_script_note
+
+                    source_file_path = source_file_properties["file_path"].split('.meta')[0]
+                    with open(source_file_path, 'r') as f1:
+                        script_code = script_code + "\n" + f1.read() + "\n" + csharp_script_note
 
             if source_file_properties:
                 exp_dir = './experiment/' + gobj_id + "_" + gobj_name + "_" + mono_script
                 exp_prompt = "prompt.txt"
                 prompt_headers = "Imagine you are helping software test engineers to create comprehensive test plans without delving into the specifics of the code." \
                     "Test engineers want to test the App. One game object we want to test in the scene of " + scene_settings["scene_name"] + " is " + gobj_name + ".\n"
-                prompt_instruct = "The current scene is" + scene_settings["scene_name"] + ". One of the gameobjects called" + gobj_name + ".\n" +config.prompt_instruct_format
-                scene_setting = config.prompt_meta_format + config.prompt_meta_header + "[Game Object]\n" + str(gobj_properties) + "\n" + "[MonoBehaviour]\n" + str(source_file_properties) + "\n" + "[Transform]\n" + str(G.nodes[transform_ids].get('properties', {}))
+                prompt_instruct = "The current scene is " + scene_settings["scene_name"] + ". One of the gameobjects called " + gobj_name + ".\n" +config.prompt_instruct_format
+                prompt_source_code = script_code + "\n"
+                scene_setting = config.prompt_meta_format + config.prompt_meta_header + "[GameObject]\n" + str(gobj_properties) + "\n" + "[MonoBehaviour Component]\n" + str(source_file_properties) + "\n" + "[Transform Component]\n" + str(G.nodes[transform_ids].get('properties', {}))
                 if not os.path.exists(exp_dir):
                     os.mkdir(exp_dir)
                 with open(os.path.join(exp_dir, exp_prompt), 'w') as f:
                     f.write(prompt_headers)
                     f.write(prompt_instruct)
+                    f.write(prompt_source_code)
                     f.write(scene_setting)
                     f.close()
 
