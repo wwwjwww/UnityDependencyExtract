@@ -1,0 +1,48 @@
+17/6/2025 3:27:53 pm Results File: D:\UnityDataAnalyzer\UnityDependencyExtract\Results\script_detailed_info\mainResults\CodeAnalysis.json
+17/6/2025 3:27:53 pm Project: C# Project
+17/6/2025 3:27:53 pm Directory Analyzed: D:\XRFix\dataset_collection\overall\VR-AR-Game\Game\Assets
+17/6/2025 3:27:53 pm Config File: Config.json
+17/6/2025 3:27:53 pm Statements: False
+17/6/2025 3:27:53 pm Verbose: False
+17/6/2025 3:27:53 pm Project Path: D:\XRFix\dataset_collection\overall\VR-AR-Game\Game\Assets
+17/6/2025 3:27:53 pm Log Level: Debug
+17/6/2025 3:27:53 pm Config File Not Found!
+17/6/2025 3:27:53 pm Additional Assemblies: None
+17/6/2025 3:27:53 pm Analysis Started...
+17/6/2025 3:27:53 pm Loading Project Assemblies...
+17/6/2025 3:27:53 pm Nothing Found!
+17/6/2025 3:27:53 pm Loading Config Assemblies Directories...
+17/6/2025 3:27:53 pm Nothing Found!
+17/6/2025 3:27:53 pm Loading Project...
+17/6/2025 3:27:53 pm Loaded!
+17/6/2025 3:27:53 pm Analyzing AudioManager
+17/6/2025 3:27:54 pm Analyzing HintTextController
+17/6/2025 3:27:54 pm Analyzing MainMenuController
+17/6/2025 3:27:54 pm Analyzing ObjectHold
+17/6/2025 3:27:54 pm Analyzing RaycastGun
+17/6/2025 3:27:54 pm Analyzing Target
+17/6/2025 3:27:54 pm Analyzing TextManager
+17/6/2025 3:27:54 pm Analyzing ThrowingTutorial
+17/6/2025 3:27:54 pm Analyzing TriggerEnter
+17/6/2025 3:27:54 pm Analyzing IncrementUIText
+17/6/2025 3:27:54 pm Analyzing StarterAssetsSampleProjectValidation
+17/6/2025 3:27:54 pm Analyzing ActionBasedControllerManager
+17/6/2025 3:27:54 pm Analyzing DestroySelf
+17/6/2025 3:27:54 pm Analyzing DynamicMoveProvider
+17/6/2025 3:27:54 pm Analyzing GazeInputManager
+17/6/2025 3:27:54 pm Analyzing ObjectSpawner
+17/6/2025 3:27:54 pm Analyzing XRPokeFollowAffordance
+17/6/2025 3:27:54 pm Analyzing BasicRigidBodyPush
+17/6/2025 3:27:54 pm Analyzing FirstPersonController
+17/6/2025 3:27:54 pm Analyzing StarterAssetsInputs
+17/6/2025 3:27:54 pm Analyzing UICanvasControllerInput
+17/6/2025 3:27:54 pm Analyzing MobileDisableAutoSwitchControls
+17/6/2025 3:27:54 pm Analyzing UIVirtualButton
+17/6/2025 3:27:54 pm Analyzing UIVirtualJoystick
+17/6/2025 3:27:54 pm Analyzing UIVirtualTouchZone
+17/6/2025 3:27:54 pm Analyzing Readme
+17/6/2025 3:27:54 pm Analyzing ReadmeEditor
+17/6/2025 3:27:54 pm Converting to JSON format...
+17/6/2025 3:27:54 pm Done!
+17/6/2025 3:27:54 pm Saving Results in D:\UnityDataAnalyzer\UnityDependencyExtract\Results\script_detailed_info\mainResults\CodeAnalysis.json
+17/6/2025 3:27:54 pm Done!

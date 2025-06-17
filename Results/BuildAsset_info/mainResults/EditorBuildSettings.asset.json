@@ -1,0 +1,84 @@
+{
+  "guid": null,
+  "file_path": "D:\\XRFix\\dataset_collection\\overall\\VR-AR-Game\\Game\\ProjectSettings\\EditorBuildSettings.asset",
+  "name": "EditorBuildSettings",
+  "type": "asset",
+  "file_size": 651,
+  "num_components": 1,
+  "COMPONENTS": [
+    {
+      "id": "1",
+      "EditorBuildSettings": [
+        {
+          "m_ObjectHideFlags": "0"
+        },
+        {
+          "serializedVersion": "2"
+        },
+        {
+          "m_Scenes": [
+            {
+              " enabled": "1"
+            },
+            {
+              "path": "Assets/Menu.unity"
+            },
+            {
+              "guid": "aa692bb3b896e43978070f1e6c70834e"
+            },
+            {
+              " enabled": "1"
+            },
+            {
+              "path": "Assets/Game.unity"
+            },
+            {
+              "guid": "d1c3109bdb54ad54c8a2b2838528e640"
+            },
+            {
+              " enabled": "1"
+            },
+            {
+              "path": "Assets/GameOver.unity"
+            },
+            {
+              "guid": "7f4d84914900f4408873f9d265368ac5"
+            }
+          ]
+        },
+        {
+          "m_configObjects": [
+            {
+              "com.unity.xr.management.loader_settings": [
+                {
+                  "fileID": "11400000"
+                },
+                {
+                  "guid": "9d8aaa5587ba0475f892432428cc6a6b"
+                },
+                {
+                  "type": "2"
+                }
+              ]
+            },
+            {
+              "com.unity.xr.openxr.settings4": [
+                {
+                  "fileID": "11400000"
+                },
+                {
+                  "guid": "9e88bcfb0bce647838230c1f1b2c14d6"
+                },
+                {
+                  "type": "2"
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "ProjectName": "UnityProject",
+  "ProjectPath": null
+}
