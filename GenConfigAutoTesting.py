@@ -65,7 +65,7 @@ def create_exp_settings(G, mono_lis, scene_settings):
 
 
 def main():
-    result_dir = './Results/scene_detailed_info/mainResults'
+    result_dir = 'Results_Game/scene_detailed_info/mainResults'
     
     # List to store the loaded graphs
     graphs = []

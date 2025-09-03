@@ -598,7 +598,7 @@ def AddPrefabRelation(G, scene_settings, results_dir, prefab_id_lis, script_lis)
                                                                                 for script in script_lis:
                                                                                     if str(mono_guid) == str(script["guid"]):
                                                                                         mono_lis.append(prefab_mono_id)
-                                                                                        nodes_to_add.append((prefab_mono_id, "Mono_Component", mono))
+                                                                                        nodes_to_add.append((prefab_mono_id, "Mono_Component", prefab_mono_lis))
                                                                                         nodes_to_add.append((mono_guid, "script_file", script))
                                                                                         edges_to_add.append((prefab_source_gameobject, comp_id, "Has_Mono_Comp"))
                                                                                         edges_to_add.append((comp_id, mono_guid, "Source_Code_File"))
@@ -803,10 +803,50 @@ def create_scene_database(scene_paths, project_path, results_dir, script_lis):
         AddLogicRelation(G, results_dir)
         AddChildRelation(G)
 
+        # Clean up graph keys before saving to GML
+        sanitize_graph_keys(G)
+
         # Save the graph in a file
         graph_file_path = os.path.join(scene_db_dir, os.path.basename(scene_path) + '_graph.gml')
         nx.write_gml(G, graph_file_path)
         print(f"Scene database created: {db_file_path}")
+
+
+def sanitize_graph_keys(G):
+    """
+    Clean up invalid keys in graph node and edge attributes for GML export.
+    GML format requires valid identifier keys without spaces or special characters.
+    """
+    def clean_dict_keys(data):
+        """Recursively clean keys in nested dictionaries and lists"""
+        if isinstance(data, dict):
+            cleaned_data = {}
+            for key, value in data.items():
+                # Clean the key
+                cleaned_key = key.strip().replace(' ', '_').replace('-', '_')
+                if cleaned_key and cleaned_key != '_':
+                    # Recursively clean nested values
+                    cleaned_data[cleaned_key] = clean_dict_keys(value)
+            return cleaned_data
+        elif isinstance(data, list):
+            # Clean each item in the list
+            return [clean_dict_keys(item) for item in data]
+        else:
+            # Return primitive values as-is
+            return data
+    
+    # Clean node attributes
+    for node_id, node_data in G.nodes(data=True):
+        if 'properties' in node_data:
+            # Clean the properties (which is a list)
+            node_data['properties'] = clean_dict_keys(node_data['properties'])
+    
+    # Clean edge attributes
+    for source, target, edge_data in G.edges(data=True):
+        cleaned_edge_data = clean_dict_keys(edge_data)
+        # Update edge data
+        G[source][target].clear()
+        G[source][target].update(cleaned_edge_data)
 
 
 def ExtractAllGameObjectTags(G, results_dir):
@@ -969,4 +1009,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
